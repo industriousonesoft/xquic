@@ -1,11 +1,32 @@
 # Copyright (c) 2022, Alibaba Group Holding Limited
 
-cmake_minimum_required (VERSION 2.6)
+# Compatibility with CMake < 2.8.12 will be removed from a future version of CMake.
+cmake_minimum_required (VERSION 2.8.12)
 project (xquic)
+
+# enable @path in the install name for any shared library being built
+# note: it's planned that a future version of CMake will enable this by default
+set(CMAKE_MACOSX_RPATH 1)
 
 set (xquic_VERSION_MAJOR 0)
 set (xquic_VERSION_MINOR 1)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+# build configs
+set(CMAKE_BUILD_TYPE Debug)
+set(XQC_ENABLE_TESTING 1)
+set(XQC_SUPPORT_SENDMMSG_BUILD 1)
+set(XQC_ENABLE_EVENT_LOG 1)
+set(XQC_ENABLE_BBR2 1)
+set(XQC_DISABLE_RENO 0)
+# setup boringssl
+set(SSL_TYPE "boringssl")
+set(SSL_PATH ${PROJECT_SOURCE_DIR}/deps/boringssl)
+set(SSL_INC_PATH ${SSL_PATH}/include)
+set(SSL_LIB_PATH
+    ${SSL_PATH}/build/ssl/libssl.a
+    ${SSL_PATH}/build/crypto/libcrypto.a
+)
 
 # build type
 if(NOT CMAKE_BUILD_TYPE)
